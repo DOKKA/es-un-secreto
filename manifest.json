@@ -1,0 +1,39 @@
+{
+	"name": "Poshmark Ambassador",
+	"version": "0.0.2",
+	"manifest_version": 2,
+	"description": "Poshmark Ambassador Program",
+	"icons": {
+		"16": "images/icon-16.png",
+		"128": "images/icon-128.png"
+	},
+	"default_locale": "en",
+	"background": {
+		"scripts": [
+			"scripts/background.js"
+		]
+	},
+	"permissions": [
+		"tabs",
+		"http://*/*",
+		"https://*/*"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"http://*/*",
+				"https://*/*"
+			],
+			"js": [
+				"lib/jquery-3.4.1.min.js",
+				"lib/jquery-ui.js",
+				"scripts/contentscript.js"
+			],
+			"css":[
+				"css/contentstyle.css"
+			],
+			"run_at": "document_end",
+			"all_frames": false
+		}
+	]
+}

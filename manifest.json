@@ -15,18 +15,20 @@
 	},
 	"permissions": [
 		"tabs",
-		"http://*/*",
-		"https://*/*"
+		"https://poshmark.com/*"
 	],
 	"content_scripts": [
 		{
 			"matches": [
-				"http://*/*",
-				"https://*/*"
+				"https://poshmark.com/*"
 			],
 			"js": [
+				"lib/moment.js",
 				"lib/jquery-3.4.1.min.js",
 				"lib/jquery-ui.js",
+				"lib/bluebird.min.js",
+				"scripts/sharebot.js",
+				"scripts/followbot.js",
 				"scripts/contentscript.js"
 			],
 			"css":[

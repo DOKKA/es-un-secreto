@@ -6,7 +6,7 @@ var template = `    <div id="A4EXCDR">
   <br /> 
   <label><input type="checkbox" id="VSIQJQMCNC"> Start at bottom</label>
   <br />
-  <label>Share Interval(minutes) <input type="number" id="LZTFEXHPBZ"></label>
+  <label>Share Interval(mins) <input type="number" id="LZTFEXHPBZ" value="120"></label>
 </fieldset>
 <br />
 <fieldset>
@@ -35,4 +35,12 @@ var template = `    <div id="A4EXCDR">
 $(document).ready( function() {
     $('body').append(template);
     $('#A4EXCDR').draggable();
+    var btnSharing = $('#BQKNYHUMTX');
+    var chkBottom = $('#VSIQJQMCNC');
+    var nmbShareInterval = $('#LZTFEXHPBZ');
+    window.ShareBot(btnSharing,chkBottom,nmbShareInterval);
+
+    var btnFollowing = $('#NTWNEGDCTD');
+    window.FollowBot(btnFollowing);
+     
   } );

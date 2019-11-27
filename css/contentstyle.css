@@ -1,10 +1,24 @@
 #A4EXCDR {
-    height:200px;
-    width:200px;
+    width:250px;
+    background-color: #ffd1f9;
+    opacity: 0.9;
     border: 1px solid black;
     position:fixed !important;
     z-index:1500;
     top:0;
     left:0;
-    
+}
+
+#LZTFEXHPBZ{
+    width:50px;
+}
+
+#AQQQVMEAKW{
+    width:50px;
+}
+
+#PMDSUIOMOW{
+  margin-left: 14px;
+    font-family: "impact";
+    font-size: 18px;
 }

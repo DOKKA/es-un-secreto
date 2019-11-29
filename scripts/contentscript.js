@@ -42,5 +42,9 @@ $(document).ready( function() {
 
     var btnFollowing = $('#NTWNEGDCTD');
     window.FollowBot(btnFollowing);
+
+    $('#PMDSUIOMOW').on('dblclick',function(){
+      $('#A4EXCDR').toggleClass('XYXYXY');
+    });
      
   } );

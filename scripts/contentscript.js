@@ -1,4 +1,4 @@
-var template = `    <div id="A4EXCDR">
+var template = `    <div id="A4EXCDR" class="XYXYXY">
 <span id="PMDSUIOMOW">Poshmark Ambassador 💯😂</span>
 <fieldset>
   <legend>Share Bot</legend>

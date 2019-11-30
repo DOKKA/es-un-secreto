@@ -53,8 +53,8 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     function setStartSharing(){
         isSharing = true;
         btnSharing.html('Stop Sharing');
+        console.log('Started sharing at '+ timestr());
         if(currentItem !== null){
-            console.log('Started share at '+ timestr());
             goUpwardsFN(currentItem);
         } else {
             if(startAtBottom()){

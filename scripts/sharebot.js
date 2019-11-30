@@ -2,9 +2,17 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     var firstItem = $('div.col-x12.col-l6.col-s8','#tiles-con').first();
     var isSharing = false;
     var currentItem = null;
-    window.STOP_ALL_SCRIPTS=false;
-    window.START_AT_BOTTOM=false;
 
+    function timestr(theTime){
+        if(theTime){
+            return theTime.format('dddd MMMM, D h:mmA');
+        }else{
+            return moment().format('dddd MMMM, D h:mmA');
+        }
+        
+    }
+    
+    
     function getShareInterval(){
         return parseInt(nmbShareInterval.val());
     }
@@ -13,7 +21,7 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
         return $('div.col-x12.col-l6.col-s8','#tiles-con').last();
     }
     
-    function isBottom(){
+    function startAtBottom(){
        return chkBottom.prop('checked');
     }
     
@@ -30,6 +38,42 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     }
 
 
+
+    function setStopSharing(elem){
+        isSharing = false;
+        console.log('Stopped sharing at '+ timestr());
+        btnSharing.html('Start Sharing');
+        if(elem){
+            currentItem = elem;
+        } else {
+            currentItem = null;
+        }
+    }
+
+    function setStartSharing(){
+        isSharing = true;
+        btnSharing.html('Stop Sharing');
+        if(currentItem !== null){
+            console.log('Started share at '+ timestr());
+            goUpwardsFN(currentItem);
+        } else {
+            if(startAtBottom()){
+                goUpwardsFN(getLastItem());
+            } else {
+                goDownwardsFN(firstItem);
+            }
+        }
+    }
+
+    function startSharingAfterTimeout(){
+        var shareInterval = getShareInterval();
+        var nextShareTime = moment().add(shareInterval,'minutes');
+        console.log('next share will start at '+ timestr(nextShareTime));
+        setTimeout(function(){
+            setStartSharing();
+        },1000*60*shareInterval);
+    }
+
     function goDownwardsFN(elem){
         elem[0].scrollIntoView();
         var nextItem = elem.next();
@@ -37,30 +81,34 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
             if(nextItem.length > 0){
                 goDownwardsFN(nextItem);
             } else{
-                window.START_AT_BOTTOM = true;
                 goUpwardsFN(elem);
             }
         },1000);
     }
-    
+
     function goUpwardsFN(elem){
         elem[0].scrollIntoView();
         var prevItem = elem.prev();
-        if(prevItem.length > 0){
-            if(isSharing === false || window.STOP_ALL_SCRIPTS || isCaptcha()){
-                console.log('stopping...')
-                currentItem = elem;
-                isSharing = false;
-            } else {
-                shareFN(elem).then(function(){
+        //there is a captcha or you stopped the share
+        if(isSharing === false || isCaptcha()){
+            setStopSharing(elem);
+        } else {
+            if(prevItem.length > 0){
+                shareFN(elem)
+                .then(function(){
                     goUpwardsFN(prevItem);
                 });
+            } else {
+                shareFN(elem)
+                .then(function(){
+                    setStopSharing();
+                    console.log('Successfully finished sharing at '+ timestr());
+                    startSharingAfterTimeout();
+                });
             }
-        } else {
-            console.log('done sharing')
         }
     }
-    
+
     function toMyFollowers(){
         return Promise.delay(1000).then(function(){
             var popup = $('#share-popup');
@@ -85,35 +133,25 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
         return Promise.delay(1000).then(function(){
             var isNotForSale = $('.not-for-sale-tag',elem).length > 0;
             var isSold = $('.inventory-tag.sold-tag',elem).length > 0;
+            var title = $('a.title',elem).html();
             if(isNotForSale || isSold){
                 return elem;
             } else {
+                //console.log('about to share ' + title);
                 return clickShare(elem).then(toMyFollowers)
             }
         });
     }
 
 
+
     btnSharing.click(function(){
         if(isSharing){
-            isSharing = false;
-            btnSharing.html('Start Sharing');
+            setStopSharing();
         } else {
-            console.log('started Sharing!');
-            isSharing = true;
-            console.log('started share at '+ moment().format('dddd MMMM, D h:mmA'));
-            btnSharing.html('Stop Sharing');
-            if(window.START_AT_BOTTOM ||  isBottom()){
-                goUpwardsFN(currentItem || getLastItem());
-                setInterval(function(){
-                    console.log('doing the share');
-                    console.log('started share at '+ moment().format('dddd MMMM, D h:mmA'));
-                    isSharing = true;
-                    goUpwardsFN(getLastItem());
-                },1000*60*getShareInterval());
-            } else {
-                goDownwardsFN(firstItem);
-            }
+            setStartSharing();
         }
     });
+
+
 }

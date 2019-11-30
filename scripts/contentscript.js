@@ -4,7 +4,7 @@ var template = `    <div id="A4EXCDR" class="XYXYXY">
   <legend>Share Bot</legend>
   <button id="BQKNYHUMTX">Start Sharing</button>
   <br /> 
-  <label><input type="checkbox" id="VSIQJQMCNC"> Start at bottom</label>
+  <label><input type="checkbox" id="VSIQJQMCNC" checked="checked"> Start at bottom</label>
   <br />
   <label>Share Interval(mins) <input type="number" id="LZTFEXHPBZ" value="120"></label>
 </fieldset>

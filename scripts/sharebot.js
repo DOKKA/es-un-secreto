@@ -1,7 +1,15 @@
-window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
+window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval,nmbShareIntRand){
     var firstItem = $('div.col-x12.col-l6.col-s8','#tiles-con').first();
     var isSharing = false;
     var currentItem = null;
+    
+    function randoMin(){
+        return Math.floor(Math.random()*getShareIntRand())+1;
+    }
+
+    function randoSec(){
+        return Math.floor(Math.random()*1000)+2000;
+    }
 
     function timestr(theTime){
         if(theTime){
@@ -10,6 +18,10 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
             return moment().format('dddd MMMM, D h:mmA');
         }
         
+    }
+
+    function getShareIntRand(){
+        return parseInt(nmbShareIntRand.val());
     }
     
     
@@ -31,6 +43,7 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
             var captchaClasses = captchaPop.attr('class').split(/\s+/);
             if(captchaClasses.indexOf('in') !== -1){
                 console.log('captcha detected!!!!!!');
+                beepPattern();
                 return true;
             }
         }
@@ -66,7 +79,7 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     }
 
     function startSharingAfterTimeout(){
-        var shareInterval = getShareInterval();
+        var shareInterval = getShareInterval()+randoMin();
         var nextShareTime = moment().add(shareInterval,'minutes');
         console.log('next share will start at '+ timestr(nextShareTime));
         setTimeout(function(){
@@ -110,7 +123,7 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     }
 
     function toMyFollowers(){
-        return Promise.delay(1000).then(function(){
+        return Promise.delay(randoSec()).then(function(){
             var popup = $('#share-popup');
             var ul = $('ul.internal-shares',popup);
             var link = $('li a.pm-followers-share-link',ul);
@@ -120,7 +133,7 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval){
     }
     
     function clickShare(elem){
-        return Promise.delay(1000).then(function(){
+        return Promise.delay(randoSec()).then(function(){
             var ul = $('ul.listing-actions-con',elem);
             var link = $('li a.share',ul);
             link[0].click();

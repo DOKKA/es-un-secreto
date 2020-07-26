@@ -30,7 +30,8 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval,nmbShareIntRand
     }
     
     function getLastItem(){
-        return $('div.col-x12.col-l6.col-s8','#tiles-con').last();
+        var last = $('div.col-x12.col-l6.col-s8','.m--t--1').last();
+        return last;
     }
     
     function startAtBottom(){
@@ -124,9 +125,9 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval,nmbShareIntRand
 
     function toMyFollowers(){
         return Promise.delay(randoSec()).then(function(){
-            var popup = $('#share-popup');
+            var popup = $('.share-modal');
             var ul = $('ul.internal-shares',popup);
-            var link = $('li a.pm-followers-share-link',ul);
+            var link = $('li a.internal-share__link',ul);
             link[0].click();
             return {};
         });
@@ -134,8 +135,8 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval,nmbShareIntRand
     
     function clickShare(elem){
         return Promise.delay(randoSec()).then(function(){
-            var ul = $('ul.listing-actions-con',elem);
-            var link = $('li a.share',ul);
+            var ul = $('.social-action-bar',elem);
+            var link = $('.social-action-bar__share',ul);
             link[0].click();
             return elem;
         });
@@ -145,8 +146,8 @@ window.ShareBot = function(btnSharing,chkBottom,nmbShareInterval,nmbShareIntRand
     function shareFN(elem){
         return Promise.delay(1000).then(function(){
             var isNotForSale = $('.not-for-sale-tag',elem).length > 0;
-            var isSold = $('.inventory-tag.sold-tag',elem).length > 0;
-            var title = $('a.title',elem).html();
+            var isSold = $('.sold-tag',elem).length > 0;
+            var title = $('a.tile__title',elem).html();
             if(isNotForSale || isSold){
                 return elem;
             } else {
